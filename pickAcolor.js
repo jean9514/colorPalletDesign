@@ -1,47 +1,35 @@
 "use strict";
+let baseDiv = document.querySelector("#base_color");
+window.addEventListener("load", init, false);
 
-document.addEventListener("DOMContentLoaded", init, false);
 // siden læses og functionerne startes
 function init() {
   document.querySelector("#head").addEventListener("input", colorPicker, false);
 }
 
 function colorPicker(event) {
-  //console.log("ColorPicker");
-  //console.log(event);
-  const hexColor = event.target.value;
-  const rgbColor = convertHexToRgb(hexColor);
-  const hslColer = convertRgbToHsl(rgbColor);
-
-  setBaseColor(hslColer);
+  let hexColor = event.target.value;
+  baseDiv.style.backgroundColor = hexColor;
+  let rgbColor = baseDiv.style.backgroundColor;
+  getPureRgb(rgbColor);
+  // setBaseColor(hslColor);
 }
 
 // conveterings function hvor HEX-kode bliver omdannet til RGB-string
 // og efterfølgende slice RGB-string i mindre bider.
-function convertHexToRgb(hexcolor) {
-  //console.log("convertHEXtoRGB");
-  //console.log(hexcolor);
-  const hexString = hexcolor.substring(1, 7);
-  const string1 = hexString.slice(0, 2);
-  const string2 = hexString.slice(2, 4);
-  const string3 = hexString.slice(4, 6);
-
-  const red = parseInt(string1, 16);
-  const green = parseInt(string2, 16);
-  const blue = parseInt(string3, 16);
-
-  console.log(`rgb(${red}, ${green}, ${blue})`);
-  //return { red, green, blue };
-
-  convertRgbToHsl(red, green, blue);
+function getPureRgb(rgbColor) {
+  let rgbString = rgbColor.substring(4, rgbColor.length - 1);
+  console.log(rgbString);
+  let rgbNumbers = rgbString.split(", ");
+  console.log(rgbNumbers);
+  let r = rgbNumbers[0];
+  let g = rgbNumbers[1];
+  let b = rgbNumbers[2];
+  convertRgbToHsl(r, g, b);
 }
 
 //converterings function fra RGB-string til HSL værdier
-function convertRgbToHsl(red, green, blue) {
-  let r = red;
-  let g = green;
-  let b = blue;
-
+function convertRgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
   b /= 255;
@@ -77,28 +65,30 @@ function convertRgbToHsl(red, green, blue) {
   l *= 100;
 
   // test om der er hul igennem
-  //console.log("hsl(%f,%f%,%f%)", h, s, l);
+  console.log("hsl(%f,%f%,%f%)", h, s, l);
 }
-
+/* 
 //her sættes farven på det felt der udgør min basecolor, udfra id og værdi i colorpickeren
 function setBaseColor(hslColor) {
   //console.log(setBaseColor);
 
-  // document.querySelector("#head").value = "#base_color";
   document.querySelector("#head").value = "#ffffff";
 }
+
 let output_hex = document.querySelector("#output_hex");
+
+let head = document.querySelector("#head");
+
+//Her for vi vist vores #HEXCODE på den valgte farve
+head.addEventListener("change", function() {
+  output_hex.innerText = "Hexcode" + head.value;
+});
 
 // id på har fået addet en eventlistner, således at når der vælges farve, sættes farven på boxen der
 //er valgt med id = base_color.
 head.addEventListener("input", function(event) {
   base_color.style.backgroundColor = event.target.value;
-});
-
-//Her for vi vist vores #HEXCODE på den valgte farve
-head.addEventListener("change", function() {
-  output_hex.innerText = "something" + head.value;
-});
+}); 
 
 function calculateColor(basecolor) {}
 
@@ -115,3 +105,4 @@ function complementary() {}
 function shade() {}
 
 function setColor(id, color) {}
+*/
